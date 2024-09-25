@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import {useState} from "react";
 
 function Page ({side = "left", children}) {
   const styles = {
@@ -151,19 +152,57 @@ function NotesAndTreasure({flexWeight}) {
     </InsetRow>;
 }
 
+function FilePickerForm({setShowNotes, setSessionNotes}) {
+  
+  const handleSubmit = (event) => {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      const fileContents = event.target.result;
+      console.log(fileContents);
+      setShowNotes(true);
+      setSessionNotes(fileContents);
+    }
+    reader.readAsText(file);
+  }
+
+  return <div id="filepicker">
+    <form>
+      <input type="file" onChange={handleSubmit}></input>
+      <input type="button" value="Choose" />
+    </form>
+  </div>;
+}
+
+function Pages({sessionNotes}) {
+  return <div id="pages">
+      <Page id="strongstart" side="left">
+        <StrongStartAndDate flexWeight="1.5" />
+        <PotentialScenes flexWeight="3" />
+        <SecretsAndClues flexWeight="4" />
+      </Page>
+      <Page side="right">
+        <FantasticLocations flexWeight="2" />
+        <NpcsAndMonsters flexWeight= "3.5" />
+        <NotesAndTreasure flexWeight="5" />
+      </Page>
+    </div>;
+}
+
 function App() {
-  return (
+  const [sessionNotes, setSessionNotes] = useState("");
+  const [showNotes, setShowNotes] = useState(false);
+
+  return (    
     <div className="App">
-        <Page id="strongstart" side="left">
-          <StrongStartAndDate flexWeight="1.5" />
-          <PotentialScenes flexWeight="3" />
-          <SecretsAndClues flexWeight="4" />
-        </Page>
-        <Page side="right">
-          <FantasticLocations flexWeight="2" />
-          <NpcsAndMonsters flexWeight= "3.5" />
-          <NotesAndTreasure flexWeight="5" />
-        </Page>
+      {!showNotes ? (
+        <FilePickerForm 
+          setShowNotes = {(val) => setShowNotes(val)}
+          setSessionNotes = {(val) => setSessionNotes(val)}
+          />
+      ) : (
+        <Pages sessionNotes={sessionNotes}/>
+      )}
     </div>
   );
 }
