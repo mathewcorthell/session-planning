@@ -8,7 +8,7 @@ div.box {
   padding: 0;
 }
 
-.two-columns {
+.two-columns ul{
   columns: 2;
 }
 h1.boxlabel {

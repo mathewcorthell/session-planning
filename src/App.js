@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import {useState} from "react";
+import ReactMarkdown from "react-markdown";
 
 function Page ({side = "left", children}) {
   const styles = {
@@ -94,60 +95,67 @@ function ColumnRowBox({id, flexWeight, children}) {
   </div>;
 }
 
-function StrongStartAndDate ({flexWeight}) {
+function StrongStartAndDate ({flexWeight, strongstart, date}) {
   return <InsetRow flexWeight={flexWeight}>
       <InsetRowBackground id="strongstart">
           <h1 className="boxlabel">Strong Start</h1>
-          <p>As the party awakes in the morning, they find a stranger hiding on the deck.</p>
+          <ReactMarkdown>{strongstart}</ReactMarkdown>
       </InsetRowBackground>
       <InsetRowInset id="date" width="2.5in" height="0.5in">
           <h1 className="boxlabel">Date</h1>  
+          <ReactMarkdown>{date}</ReactMarkdown>          
       </InsetRowInset>
     </InsetRow>;
 }
 
-function PotentialScenes() {
+function PotentialScenes({potentialscenes}) {
   return <ColumnRow flexWeight="3">
       <ColumnRowBox id="potentialscenes" flexWeight="1">
         <h1 className="boxlabel">Potential Scenes</h1>
+        <ReactMarkdown className="two-columns">{potentialscenes}</ReactMarkdown>
       </ColumnRowBox>
     </ColumnRow>;
 }
 
-function SecretsAndClues() {
-  return <ColumnRow flexWeight="4">
-      <ColumnRowBox id="secretsandclues" flexWeight="1">
+function SecretsAndClues({flexWeight, secretsandclues}) {
+  return <ColumnRow flexWeight={flexWeight}>
+      <ColumnRowBox id="secretsandclues">
         <h1 className="boxlabel">Secrets and Clues</h1>
+        <ReactMarkdown>{secretsandclues}</ReactMarkdown>
       </ColumnRowBox>
     </ColumnRow>;
 }
 
-function FantasticLocations({flexWeight}) {
+function FantasticLocations({flexWeight, fantasticLocations}) {
   return <ColumnRow flexWeight={flexWeight}>
       <ColumnRowBox id="locations">
         <h1 className="boxlabel">Fantastic Locations</h1>
+        <ReactMarkdown className="two-columns">{fantasticLocations}</ReactMarkdown>
       </ColumnRowBox>
     </ColumnRow>;
 }
 
-function NpcsAndMonsters({flexWeight}) {
+function NpcsAndMonsters({flexWeight, npcsandorgs, monsters}) {
   return <ColumnRow flexWeight={flexWeight}>
       <ColumnRowBox id="npcs">
         <h1 className="boxlabel">NPCs & Orgs</h1>
+        <ReactMarkdown>{npcsandorgs}</ReactMarkdown>
       </ColumnRowBox>
       <ColumnRowBox id="monsters">
         <h1 className="boxlabel">Monsters</h1>
+        <ReactMarkdown>{monsters}</ReactMarkdown>
       </ColumnRowBox>
     </ColumnRow>;
 }
 
-function NotesAndTreasure({flexWeight}) {
+function NotesAndTreasure({flexWeight, treasure}) {
   return <InsetRow flexWeight={flexWeight}>
       <InsetRowBackground id="notes">
           <h1 className="boxlabel">Notes</h1>
       </InsetRowBackground>
-      <InsetRowInset id="treasure" width="2.5in" height="2in">
-          <h1 className="boxlabel">Treasure</h1>  
+      <InsetRowInset id="treasure" width="4.25in" height="2in">
+          <h1 className="boxlabel">Treasure</h1>
+          <ReactMarkdown>{treasure}</ReactMarkdown>  
       </InsetRowInset>
     </InsetRow>;
 }
@@ -175,16 +183,30 @@ function FilePickerForm({setShowNotes, setSessionNotes}) {
 }
 
 function Pages({sessionNotes}) {
+  const lines = sessionNotes.split("\n");
+  const noteSections = {};
+  var section = "";
+  let header = /^#.*/;
+  for (let line of lines) {
+    if(header.test(line)) {
+      section = line.replaceAll(/[#\s]/g, "").toLowerCase();
+      noteSections[section] = "";
+    }
+    else {
+      noteSections[section] += line + "\n";
+    }
+  }
+
   return <div id="pages">
       <Page id="strongstart" side="left">
-        <StrongStartAndDate flexWeight="1.5" />
-        <PotentialScenes flexWeight="3" />
-        <SecretsAndClues flexWeight="4" />
+        <StrongStartAndDate flexWeight="1.5" strongstart={noteSections['strongstart']} date={noteSections['date']} />
+        <PotentialScenes flexWeight="3" potentialscenes={noteSections['potentialscenes']}/>
+        <SecretsAndClues flexWeight="4" secretsandclues={noteSections['secretsandclues']}/>
       </Page>
       <Page side="right">
-        <FantasticLocations flexWeight="2" />
-        <NpcsAndMonsters flexWeight= "3.5" />
-        <NotesAndTreasure flexWeight="5" />
+        <FantasticLocations flexWeight="2" fantasticLocations={noteSections['fantasticlocations']}/>
+        <NpcsAndMonsters flexWeight= "3.5" npcsandorgs={noteSections['npcsandorgs']} monsters={noteSections['monsters']}/>
+        <NotesAndTreasure flexWeight="5" treasure={noteSections['treasure']} />
       </Page>
     </div>;
 }
