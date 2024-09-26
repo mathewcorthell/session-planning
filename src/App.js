@@ -3,10 +3,6 @@ import './App.css';
 import {useState} from "react";
 import ReactMarkdown from "react-markdown";
 
-/**
- * BUILDING BLOCKS
- */
-
 function Page ({side = "left", children}) {
   const styles = {
     width: "8.5in",
@@ -87,40 +83,16 @@ function ColumnRow({flexWeight, children}) {
   </div>;
 }
 
-function ColumnRowBox({id, flexWeight, children, skipBox = false, nestColumn = false}) {
+function ColumnRowBox({id, flexWeight, children}) {
   const styles = {
     flex: flexWeight,
     flexBasis: "100%",
     padding: 0
-  };
-  if(skipBox) 
-    styles.border = 0;
-  if(nestColumn) {
-    styles.display = "flex";
-    styles.flexDirection = "column";
   }
-
 
   return <div id={id} className="box" style={styles}>
     {children}
   </div>;
-}
-
-/**
- * CONTENT BLOCKS
- */
-
-function Characters({flexWeight, characters}) {
-
-  const three = [1,2,3];
-  return <>
-    {three.map(() => (
-      <ColumnRow flexWeight="1">
-        <ColumnRowBox flexWeight="1"/>
-        <ColumnRowBox flexWeight="1"/>
-      </ColumnRow>
-    ))}
-  </>;
 }
 
 function StrongStartAndDate ({flexWeight, strongstart, date}) {
@@ -209,39 +181,6 @@ function FilePickerForm({setShowNotes, setSessionNotes}) {
     </form>
   </div>;
 }
-function Tracker() {
-
-  const numCreatures = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-  const numRounds = [1,2,3,4,5,6,7,8,9,10];
-  const numMinis = [1,2,3,4,5,6];
-
-  return <>
-    <ColumnRow flexWeight="3">
-      <ColumnRowBox flexWeight="3" skipBox={true} nestColumn={true}>
-        {numCreatures.map(() => (
-          <div style={{flex:"1", display:"flex", flexDirection:"row"}}>
-            <div style={{flex:"6", border:"solid", borderRight:"0", borderBottom:"0"}}></div>
-            {numRounds.map(() => (
-              <div style={{flex:"1", border:"solid", borderRight:"0", borderBottom:"0"}}></div>
-            ))}
-          </div>
-        ))}
-      </ColumnRowBox>
-      <ColumnRowBox flexWeight="2" skipBox={true} nestColumn={true}>
-        {numMinis.map(() => (
-          <ColumnRow flexWeight="1">
-            <ColumnRowBox flexWeight="1"></ColumnRowBox>
-            <ColumnRowBox flexWeight="1"></ColumnRowBox>
-          </ColumnRow>
-        ))}
-      </ColumnRowBox>
-    </ColumnRow>
-    <ColumnRow flexWeight="2">
-      <ColumnRowBox flexWeight="1"></ColumnRowBox>
-    </ColumnRow>
-  </>
-  ;
-}
 
 function Pages({sessionNotes}) {
   const lines = sessionNotes.split("\n");
@@ -259,21 +198,15 @@ function Pages({sessionNotes}) {
   }
 
   return <div id="pages">
-      <Page id="one" side="right">
-        <Characters/>
-      </Page>
-      <Page id="twos" side="left">
+      <Page id="strongstart" side="left">
         <StrongStartAndDate flexWeight="1.5" strongstart={noteSections['strongstart']} date={noteSections['date']} />
         <PotentialScenes flexWeight="3" potentialscenes={noteSections['potentialscenes']}/>
         <SecretsAndClues flexWeight="4" secretsandclues={noteSections['secretsandclues']}/>
       </Page>
-      <Page id="three" side="right">
+      <Page side="right">
         <FantasticLocations flexWeight="2" fantasticLocations={noteSections['fantasticlocations']}/>
         <NpcsAndMonsters flexWeight= "3.5" npcsandorgs={noteSections['npcsandorgs']} monsters={noteSections['monsters']}/>
         <NotesAndTreasure flexWeight="5" treasure={noteSections['treasure']} />
-      </Page>
-      <Page id="four" side="left">
-        <Tracker/>
       </Page>
     </div>;
 }
