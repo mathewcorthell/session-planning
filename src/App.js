@@ -1,192 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
 import {useState} from "react";
-import ReactMarkdown from "react-markdown";
-
-/**
- * BUILDING BLOCKS
- */
-
-function Page ({side = "left", children}) {
-  const styles = {
-    width: "8.5in",
-    height: "11in",
-    paddingTop: "0.3in",
-    paddingBottom: "0.3in",
-    paddingLeft: "0.3in",
-    paddingRight: "0.3in",
-    display: "flex",
-    flexDirection: "column",
-    background: "radial-gradient(gray 1px, transparent 0)",
-    backgroundSize: ".25in .25in",
-    backgroundClip: "content-box"
-  };
-
-  if(side === "left") {
-    styles['paddingRight'] = "0.556in";
-  }
-  if(side === "right") {
-    styles['paddingLeft'] = "0.556in";
-  }
-
-  return <div style={styles}>
-    {children}
-  </div>
-}
-
-function InsetRow({flexWeight, children}) {
-  const styles= {
-    padding: 0,
-    flex: flexWeight,
-    position: "relative"
-  }
-
-  return <div style={styles}>
-    {children}
-  </div>;
-}
-
-function InsetRowBackground({id, children}) {
-  const styles = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    position: "absolute",
-    padding: 0
-  }
-  return <div id={id} className="box" style={styles}>
-    {children}
-  </div>
-}
-function InsetRowInset({id, width, height, children}) {
-  const styles = {
-    position: "absolute",
-    width: width,
-    height: height,
-    right: 0,
-    padding: 0
-  }
-
-  return <div id={id} className="box" style={styles}>
-    {children}
-  </div>
-}
-
-function ColumnRow({flexWeight, children}) {
-  const styles = {
-    flex: flexWeight,
-
-    padding: 0,
-    display: "flex",
-    flexDirection: "row",
-  }
-
-  return <div style={styles}>
-    {children}
-  </div>;
-}
-
-function ColumnRowBox({id, flexWeight, children, skipBox = false, nestColumn = false}) {
-  const styles = {
-    flex: flexWeight,
-    flexBasis: "100%",
-    padding: 0
-  };
-  if(skipBox) 
-    styles.border = 0;
-  if(nestColumn) {
-    styles.display = "flex";
-    styles.flexDirection = "column";
-  }
+import {Page, 
+  InsetRow, 
+  InsetRowBackground, 
+  InsetRowInset} from "./FormatBlocks.js";
+import {Characters,
+  StrongStartAndDate,
+  PotentialScenes,
+  SecretsAndClues,
+  FantasticLocations,
+  NpcsAndMonsters,
+  NotesAndTreasure
+} from "./ContentBlocks.js";
+import { Tracker } from './Tracker.js';
 
 
-  return <div id={id} className="box" style={styles}>
-    {children}
-  </div>;
-}
-
-/**
- * CONTENT BLOCKS
- */
-
-function Characters({flexWeight, characters}) {
-
-  const three = [1,2,3];
-  return <>
-    {three.map(() => (
-      <ColumnRow flexWeight="1">
-        <ColumnRowBox flexWeight="1"/>
-        <ColumnRowBox flexWeight="1"/>
-      </ColumnRow>
-    ))}
-  </>;
-}
-
-function StrongStartAndDate ({flexWeight, strongstart, date}) {
-  return <InsetRow flexWeight={flexWeight}>
-      <InsetRowBackground id="strongstart">
-          <h1 className="boxlabel">Strong Start</h1>
-          <ReactMarkdown>{strongstart}</ReactMarkdown>
-      </InsetRowBackground>
-      <InsetRowInset id="date" width="2.5in" height="0.5in">
-          <h1 className="boxlabel">Date</h1>  
-          <ReactMarkdown>{date}</ReactMarkdown>          
-      </InsetRowInset>
-    </InsetRow>;
-}
-
-function PotentialScenes({potentialscenes}) {
-  return <ColumnRow flexWeight="3">
-      <ColumnRowBox id="potentialscenes" flexWeight="1">
-        <h1 className="boxlabel">Potential Scenes</h1>
-        <ReactMarkdown className="two-columns">{potentialscenes}</ReactMarkdown>
-      </ColumnRowBox>
-    </ColumnRow>;
-}
-
-function SecretsAndClues({flexWeight, secretsandclues}) {
-  return <ColumnRow flexWeight={flexWeight}>
-      <ColumnRowBox id="secretsandclues">
-        <h1 className="boxlabel">Secrets and Clues</h1>
-        <ReactMarkdown>{secretsandclues}</ReactMarkdown>
-      </ColumnRowBox>
-    </ColumnRow>;
-}
-
-function FantasticLocations({flexWeight, fantasticLocations}) {
-  return <ColumnRow flexWeight={flexWeight}>
-      <ColumnRowBox id="locations">
-        <h1 className="boxlabel">Fantastic Locations</h1>
-        <ReactMarkdown className="two-columns">{fantasticLocations}</ReactMarkdown>
-      </ColumnRowBox>
-    </ColumnRow>;
-}
-
-function NpcsAndMonsters({flexWeight, npcsandorgs, monsters}) {
-  return <ColumnRow flexWeight={flexWeight}>
-      <ColumnRowBox id="npcs">
-        <h1 className="boxlabel">NPCs & Orgs</h1>
-        <ReactMarkdown>{npcsandorgs}</ReactMarkdown>
-      </ColumnRowBox>
-      <ColumnRowBox id="monsters">
-        <h1 className="boxlabel">Monsters</h1>
-        <ReactMarkdown>{monsters}</ReactMarkdown>
-      </ColumnRowBox>
-    </ColumnRow>;
-}
-
-function NotesAndTreasure({flexWeight, treasure}) {
-  return <InsetRow flexWeight={flexWeight}>
-      <InsetRowBackground id="notes">
-          <h1 className="boxlabel">Notes</h1>
-      </InsetRowBackground>
-      <InsetRowInset id="treasure" width="4.25in" height="2in">
-          <h1 className="boxlabel">Treasure</h1>
-          <ReactMarkdown>{treasure}</ReactMarkdown>  
-      </InsetRowInset>
-    </InsetRow>;
-}
 
 function FilePickerForm({setShowNotes, setSessionNotes}) {
   
@@ -209,40 +37,6 @@ function FilePickerForm({setShowNotes, setSessionNotes}) {
     </form>
   </div>;
 }
-function Tracker() {
-
-  const numCreatures = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-  const numRounds = [1,2,3,4,5,6,7,8,9,10];
-  const numMinis = [1,2,3,4,5,6];
-
-  return <>
-    <ColumnRow flexWeight="3">
-      <ColumnRowBox flexWeight="3" skipBox={true} nestColumn={true}>
-        {numCreatures.map(() => (
-          <div style={{flex:"1", display:"flex", flexDirection:"row"}}>
-            <div style={{flex:"6", border:"solid", borderRight:"0", borderBottom:"0"}}></div>
-            {numRounds.map(() => (
-              <div style={{flex:"1", border:"solid", borderRight:"0", borderBottom:"0"}}></div>
-            ))}
-          </div>
-        ))}
-      </ColumnRowBox>
-      <ColumnRowBox flexWeight="2" skipBox={true} nestColumn={true}>
-        {numMinis.map(() => (
-          <ColumnRow flexWeight="1">
-            <ColumnRowBox flexWeight="1"></ColumnRowBox>
-            <ColumnRowBox flexWeight="1"></ColumnRowBox>
-          </ColumnRow>
-        ))}
-      </ColumnRowBox>
-    </ColumnRow>
-    <ColumnRow flexWeight="2">
-      <ColumnRowBox flexWeight="1"></ColumnRowBox>
-    </ColumnRow>
-  </>
-  ;
-}
-
 function Pages({sessionNotes}) {
   const lines = sessionNotes.split("\n");
   const noteSections = {};
