@@ -71,6 +71,18 @@ export function NpcsAndMonsters({flexWeight, npcsandorgs, monsters}) {
         </ColumnRowBox>
       </ColumnRow>;
   }
+export function NpcsAndTreasure({flexWeight, npcsandorgs, treasure}) {
+    return <ColumnRow flexWeight={flexWeight}>
+        <ColumnRowBox id="npcs">
+          <h1 className="boxlabel">NPCs & Orgs</h1>
+          <ReactMarkdown>{npcsandorgs}</ReactMarkdown>
+        </ColumnRowBox>
+        <ColumnRowBox id="treasure">
+          <h1 className="boxlabel">Treasure</h1>
+          <ReactMarkdown>{treasure}</ReactMarkdown>
+        </ColumnRowBox>
+      </ColumnRow>;
+  }
   
 export function NotesAndTreasure({flexWeight, treasure}) {
     return <InsetRow flexWeight={flexWeight}>
@@ -84,4 +96,11 @@ export function NotesAndTreasure({flexWeight, treasure}) {
       </InsetRow>;
   }
   
+  export function Notes({flexWeight}) {
+    return <ColumnRow flexWeight={flexWeight}>
+        <ColumnRowBox flexWeight="1">
+            <h1 className="boxlabel">Notes</h1>
+        </ColumnRowBox>
+    </ColumnRow>;
+  }
   

@@ -9,10 +9,12 @@ import {Characters,
   PotentialScenes,
   SecretsAndClues,
   FantasticLocations,
-  NpcsAndMonsters,
-  NotesAndTreasure
+  NpcsAndTreasure,
+  NotesAndTreasure,
+  Notes
 } from "./ContentBlocks.js";
 import { Tracker } from './Tracker.js';
+import { ParseSessionNotes } from './Parser.js';
 
 
 
@@ -38,33 +40,21 @@ function FilePickerForm({setShowNotes, setSessionNotes}) {
   </div>;
 }
 function Pages({sessionNotes}) {
-  const lines = sessionNotes.split("\n");
-  const noteSections = {};
-  var section = "";
-  let header = /^#.*/;
-  for (let line of lines) {
-    if(header.test(line)) {
-      section = line.replaceAll(/[#\s]/g, "").toLowerCase();
-      noteSections[section] = "";
-    }
-    else {
-      noteSections[section] += line + "\n";
-    }
-  }
+  const notesSections = ParseSessionNotes(sessionNotes);
 
   return <div id="pages">
       <Page id="one" side="right">
         <Characters/>
       </Page>
       <Page id="twos" side="left">
-        <StrongStartAndDate flexWeight="1.5" strongstart={noteSections['strongstart']} date={noteSections['date']} />
-        <PotentialScenes flexWeight="3" potentialscenes={noteSections['potentialscenes']}/>
-        <SecretsAndClues flexWeight="4" secretsandclues={noteSections['secretsandclues']}/>
+        <StrongStartAndDate flexWeight="1.5" strongstart={notesSections['strongstart']} date={notesSections['date']} />
+        <PotentialScenes flexWeight="3" potentialscenes={notesSections['potentialscenes']}/>
+        <SecretsAndClues flexWeight="4" secretsandclues={notesSections['secretsandclues']}/>
       </Page>
       <Page id="three" side="right">
-        <FantasticLocations flexWeight="2" fantasticLocations={noteSections['fantasticlocations']}/>
-        <NpcsAndMonsters flexWeight= "3.5" npcsandorgs={noteSections['npcsandorgs']} monsters={noteSections['monsters']}/>
-        <NotesAndTreasure flexWeight="5" treasure={noteSections['treasure']} />
+        <FantasticLocations flexWeight="2" fantasticLocations={notesSections['fantasticlocations']}/>
+        <NpcsAndTreasure flexWeight= "3.5" npcsandorgs={notesSections['npcsandorgs']} treasure={notesSections['treasure']}/>
+        <Notes flexWeight="5"/>
       </Page>
       <Page id="four" side="left">
         <Tracker/>
