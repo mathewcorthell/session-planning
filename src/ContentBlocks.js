@@ -32,8 +32,8 @@ export function StrongStartAndDate ({flexWeight, strongstart, date}) {
       </InsetRow>;
   }
   
-export function PotentialScenes({potentialscenes}) {
-    return <ColumnRow flexWeight="3">
+export function PotentialScenes({flexWeight, potentialscenes}) {
+    return <ColumnRow flexWeight={flexWeight}>
         <ColumnRowBox id="potentialscenes" flexWeight="1">
           <h1 className="boxlabel">Potential Scenes</h1>
           <ReactMarkdown className="two-columns">{potentialscenes}</ReactMarkdown>

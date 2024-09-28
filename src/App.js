@@ -48,13 +48,14 @@ function Pages({sessionNotes}) {
       </Page>
       <Page id="twos" side="left">
         <StrongStartAndDate flexWeight="1.5" strongstart={notesSections['strongstart']} date={notesSections['date']} />
-        <PotentialScenes flexWeight="3" potentialscenes={notesSections['potentialscenes']}/>
+        <PotentialScenes flexWeight="2" potentialscenes={notesSections['potentialscenes']}/>
         <SecretsAndClues flexWeight="4" secretsandclues={notesSections['secretsandclues']}/>
+        <Notes flexWeight="2"/>
       </Page>
       <Page id="three" side="right">
-        <FantasticLocations flexWeight="2" fantasticLocations={notesSections['fantasticlocations']}/>
-        <NpcsAndTreasure flexWeight= "3.5" npcsandorgs={notesSections['npcsandorgs']} treasure={notesSections['treasure']}/>
-        <Notes flexWeight="5"/>
+        <FantasticLocations flexWeight="3" fantasticLocations={notesSections['fantasticlocations']}/>
+        <NpcsAndTreasure flexWeight= "3" npcsandorgs={notesSections['npcsandorgs']} treasure={notesSections['treasure']}/>
+        <Notes flexWeight="3"/>
       </Page>
       <Page id="four" side="left">
         <Tracker/>
