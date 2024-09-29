@@ -11,7 +11,8 @@ import {Characters,
   FantasticLocations,
   NpcsAndTreasure,
   NotesAndTreasure,
-  Notes
+  Notes,
+  Monsters
 } from "./ContentBlocks.js";
 import { Tracker } from './Tracker.js';
 import { ParseSessionNotes } from './Parser.js';
@@ -47,18 +48,20 @@ function Pages({sessionNotes}) {
         <Characters/>
       </Page>
       <Page id="twos" side="left">
-        <StrongStartAndDate flexWeight="1.5" strongstart={notesSections['strongstart']} date={notesSections['date']} />
-        <PotentialScenes flexWeight="2" potentialscenes={notesSections['potentialscenes']}/>
-        <SecretsAndClues flexWeight="4" secretsandclues={notesSections['secretsandclues']}/>
-        <Notes flexWeight="2"/>
+        <StrongStartAndDate height="13%" strongstart={notesSections['strongstart']} date={notesSections['date']} />
+        <PotentialScenes height="25%" potentialscenes={notesSections['potentialscenes']}/>
+        <SecretsAndClues height="40%" secretsandclues={notesSections['secretsandclues']}/>
+        <Notes height="22%"/>
       </Page>
       <Page id="three" side="right">
-        <FantasticLocations flexWeight="3" fantasticLocations={notesSections['fantasticlocations']}/>
-        <NpcsAndTreasure flexWeight= "3" npcsandorgs={notesSections['npcsandorgs']} treasure={notesSections['treasure']}/>
-        <Notes flexWeight="3"/>
+        <FantasticLocations height="35%" fantasticLocations={notesSections['fantasticlocations']}/>
+        <NpcsAndTreasure height="40%" npcsandorgs={notesSections['npcsandorgs']} treasure={notesSections['treasure']}/>
+        <Notes height="25%"/>
       </Page>
       <Page id="four" side="left">
-        <Tracker/>
+        <Monsters height="30%" monsters={notesSections['monsters']}/>
+        <Tracker height="50%"/>
+        <Notes height="20%"/>
       </Page>
     </div>;
 }

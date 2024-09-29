@@ -6,7 +6,7 @@ import { ColumnRow,
 } from "./FormatBlocks";
 import ReactMarkdown from "react-markdown";
 
-export function Characters({flexWeight, characters}) {
+export function Characters({flexWeight = "", height = "", characters}) {
 
     const three = [1,2,3];
     return <>
@@ -19,8 +19,8 @@ export function Characters({flexWeight, characters}) {
     </>;
   }
 
-export function StrongStartAndDate ({flexWeight, strongstart, date}) {
-    return <InsetRow flexWeight={flexWeight}>
+export function StrongStartAndDate ({flexWeight = "", height = "", strongstart, date}) {
+    return <InsetRow flexWeight={flexWeight} height={height}>
         <InsetRowBackground id="strongstart">
             <h1 className="boxlabel">Strong Start</h1>
             <ReactMarkdown>{strongstart}</ReactMarkdown>
@@ -32,8 +32,8 @@ export function StrongStartAndDate ({flexWeight, strongstart, date}) {
       </InsetRow>;
   }
   
-export function PotentialScenes({flexWeight, potentialscenes}) {
-    return <ColumnRow flexWeight={flexWeight}>
+export function PotentialScenes({flexWeight = "", height = "", potentialscenes}) {
+    return <ColumnRow flexWeight={flexWeight} height={height}>
         <ColumnRowBox id="potentialscenes" flexWeight="1">
           <h1 className="boxlabel">Potential Scenes</h1>
           <ReactMarkdown className="two-columns">{potentialscenes}</ReactMarkdown>
@@ -41,8 +41,8 @@ export function PotentialScenes({flexWeight, potentialscenes}) {
       </ColumnRow>;
   }
     
-export function SecretsAndClues({flexWeight, secretsandclues}) {
-    return <ColumnRow flexWeight={flexWeight}>
+export function SecretsAndClues({flexWeight = "", height = "", secretsandclues}) {
+    return <ColumnRow flexWeight={flexWeight} height={height}>
         <ColumnRowBox id="secretsandclues">
           <h1 className="boxlabel">Secrets and Clues</h1>
           <ReactMarkdown>{secretsandclues}</ReactMarkdown>
@@ -50,8 +50,8 @@ export function SecretsAndClues({flexWeight, secretsandclues}) {
       </ColumnRow>;
   }
   
-export function FantasticLocations({flexWeight, fantasticLocations}) {
-    return <ColumnRow flexWeight={flexWeight}>
+export function FantasticLocations({flexWeight = "", height = "", fantasticLocations}) {
+    return <ColumnRow flexWeight={flexWeight} height={height}>
         <ColumnRowBox id="locations">
           <h1 className="boxlabel">Fantastic Locations</h1>
           <ReactMarkdown className="two-columns">{fantasticLocations}</ReactMarkdown>
@@ -59,45 +59,30 @@ export function FantasticLocations({flexWeight, fantasticLocations}) {
       </ColumnRow>;
   }
   
-export function NpcsAndMonsters({flexWeight, npcsandorgs, monsters}) {
-    return <ColumnRow flexWeight={flexWeight}>
-        <ColumnRowBox id="npcs">
+  export function NpcsAndTreasure({flexWeight = "", height = "", npcsandorgs, treasure}) {
+    return <ColumnRow flexWeight={flexWeight} height={height}>
+        <ColumnRowBox id="npcs" width="50%">
           <h1 className="boxlabel">NPCs & Orgs</h1>
           <ReactMarkdown>{npcsandorgs}</ReactMarkdown>
         </ColumnRowBox>
-        <ColumnRowBox id="monsters">
-          <h1 className="boxlabel">Monsters</h1>
-          <ReactMarkdown>{monsters}</ReactMarkdown>
-        </ColumnRowBox>
-      </ColumnRow>;
-  }
-export function NpcsAndTreasure({flexWeight, npcsandorgs, treasure}) {
-    return <ColumnRow flexWeight={flexWeight}>
-        <ColumnRowBox id="npcs">
-          <h1 className="boxlabel">NPCs & Orgs</h1>
-          <ReactMarkdown>{npcsandorgs}</ReactMarkdown>
-        </ColumnRowBox>
-        <ColumnRowBox id="treasure">
+        <ColumnRowBox id="treasure" width="50%">
           <h1 className="boxlabel">Treasure</h1>
           <ReactMarkdown>{treasure}</ReactMarkdown>
         </ColumnRowBox>
       </ColumnRow>;
   }
-  
-export function NotesAndTreasure({flexWeight, treasure}) {
-    return <InsetRow flexWeight={flexWeight}>
-        <InsetRowBackground id="notes">
-            <h1 className="boxlabel">Notes</h1>
-        </InsetRowBackground>
-        <InsetRowInset id="treasure" width="4.25in" height="2in">
-            <h1 className="boxlabel">Treasure</h1>
-            <ReactMarkdown>{treasure}</ReactMarkdown>  
-        </InsetRowInset>
-      </InsetRow>;
+
+  export function Monsters({flexWeight = "", height = "", monsters}) {
+    return <ColumnRow flexWeight={flexWeight} height={height}>
+      <ColumnRowBox id="monsters">
+        <h1 className="boxlabel">Monsters</h1>
+        <ReactMarkdown className="two-columns">{monsters}</ReactMarkdown>
+      </ColumnRowBox>
+    </ColumnRow>
   }
   
-  export function Notes({flexWeight}) {
-    return <ColumnRow flexWeight={flexWeight}>
+  export function Notes({flexWeight = "", height = ""}) {
+    return <ColumnRow flexWeight={flexWeight} height={height}>
         <ColumnRowBox flexWeight="1">
             <h1 className="boxlabel">Notes</h1>
         </ColumnRowBox>
