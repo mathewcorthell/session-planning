@@ -18,11 +18,11 @@ h1.boxlabel {
 }
 p {
   margin-left: 0.15in;
-  font-size: larger;
+  font-size: 1em;
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 ul {
   margin: 0.15in;
   margin-left: 0;
-  font-size: large;
+  font-size: 1em;
 }

@@ -1,34 +1,53 @@
 import { ColumnRow, ColumnRowBox } from "./FormatBlocks";
 
-export function Tracker() {
+function TrackerCell ({lastRow = false, lastCol = false, flexWeight = "", width = ""}) {
+  const styles={
+    border: "solid"
+  };
+  if(flexWeight) {
+    styles.flex = flexWeight;
+  }
+  if(width) {
+    styles.width = width;
+  }
+  if(!lastRow) {
+    styles.borderBottom = 0;
+  }
+  if(!lastCol) {
+    styles.borderRight = 0;
+  }
 
-  const numCreatures = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-  const numRounds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const numMinis = [1, 2, 3, 4, 5, 6];
+  return <div style={styles}/>;
+}
 
-  return <>
-    <ColumnRow flexWeight="3">
-      <ColumnRowBox flexWeight="3" skipBox={true} nestColumn={true}>
-        {numCreatures.map(() => (
-          <div style={{ flex: "1", display: "flex", flexDirection: "row" }}>
-            <div style={{ flex: "6", border: "solid", borderRight: "0", borderBottom: "0" }}></div>
-            {numRounds.map(() => (
-              <div style={{ flex: "1", border: "solid", borderRight: "0", borderBottom: "0" }}></div>
-            ))}
-          </div>
-        ))}
-      </ColumnRowBox>
-      <ColumnRowBox flexWeight="2" skipBox={true} nestColumn={true}>
-        {numMinis.map(() => (
-          <ColumnRow flexWeight="1">
-            <ColumnRowBox flexWeight="1"></ColumnRowBox>
-            <ColumnRowBox flexWeight="1"></ColumnRowBox>
-          </ColumnRow>
-        ))}
-      </ColumnRowBox>
-    </ColumnRow>
-    <ColumnRow flexWeight="2">
-      <ColumnRowBox flexWeight="1"></ColumnRowBox>
-    </ColumnRow>
-  </>;
+function TrackerRow({numRounds = 10, lastRow=false, children}) {
+  const rounds = Array.from(Array(Number(numRounds)).keys());
+  return <div style={{ flex: "1", display: "flex", flexDirection: "row" }}>
+      <TrackerCell flexWeight="6" lastRow={lastRow} />
+      {rounds.map((item, index, array) => (
+        <TrackerCell flexWeight="1" lastRow={lastRow} lastCol={index == (array.length-1) ? true : false}/>
+      ))}
+    </div>;
+}
+
+export function Tracker({flexWeight = "", height = ""}) {
+
+  const creatures = Array.from(Array(20).keys());
+  const minis = [1, 2, 3, 4, 5, 6];
+
+  return <ColumnRow flexWeight={flexWeight} height={height}>
+    <ColumnRowBox width="60%" skipBox={true} nestColumn={true} padding="0.1in">
+      {creatures.map((item, index, array) => (
+        <TrackerRow numRounds="10" lastRow={index == (array.length - 1) ? true : false}></TrackerRow>
+      ))}
+    </ColumnRowBox>
+    <ColumnRowBox width="40%" skipBox={true} nestColumn={true}>
+      {minis.map(() => (
+        <ColumnRow flexWeight="1">
+          <ColumnRowBox flexWeight="1"></ColumnRowBox>
+          <ColumnRowBox flexWeight="1"></ColumnRowBox>
+        </ColumnRow>
+      ))}
+    </ColumnRowBox>
+  </ColumnRow>;
 }

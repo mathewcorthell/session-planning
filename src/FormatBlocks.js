@@ -27,12 +27,15 @@ export function Page ({side = "left", children}) {
   }
   
 
-export function InsetRow({flexWeight, children}) {
+export function InsetRow({flexWeight = "", height = "", children}) {
     const styles= {
       padding: 0,
-      flex: flexWeight,
       position: "relative"
     }
+    if(flexWeight != "")
+      styles.flex = flexWeight;
+    if(height != "")
+      styles.height = height;
   
     return <div style={styles}>
       {children}
@@ -67,32 +70,39 @@ export function InsetRowInset({id, width, height, children}) {
     </div>
   }
   
-export function ColumnRow({flexWeight, children}) {
+export function ColumnRow({flexWeight = "", height = "", children}) {
     const styles = {
-      flex: flexWeight,
-  
       padding: 0,
       display: "flex",
       flexDirection: "row",
-    }
-  
+    }  
+    if(flexWeight != "")
+      styles.flex = flexWeight;
+    if(height != "")
+      styles.height = height;
+
     return <div style={styles}>
       {children}
     </div>;
   }
   
-export function ColumnRowBox({id, flexWeight, children, skipBox = false, nestColumn = false}) {
+export function ColumnRowBox({id, flexWeight = "", width = "", padding = "", children, skipBox = false, nestColumn = false}) {
     const styles = {
-      flex: flexWeight,
-      flexBasis: "100%",
       padding: 0
     };
+    if(flexWeight !== "") 
+      styles.flex = flexWeight;
+    if(width !== "") 
+      styles.width = width;
+
     if(skipBox) 
       styles.border = 0;
     if(nestColumn) {
       styles.display = "flex";
       styles.flexDirection = "column";
     }
+    if(padding)
+      styles.padding = padding;
   
   
     return <div id={id} className="box" style={styles}>
