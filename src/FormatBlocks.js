@@ -86,7 +86,7 @@ export function ColumnRow({flexWeight = "", height = "", children}) {
     </div>;
   }
   
-export function ColumnRowBox({id, flexWeight = "", width = "", children, skipBox = false, nestColumn = false}) {
+export function ColumnRowBox({id, flexWeight = "", width = "", padding = "", children, skipBox = false, nestColumn = false}) {
     const styles = {
       padding: 0
     };
@@ -101,6 +101,8 @@ export function ColumnRowBox({id, flexWeight = "", width = "", children, skipBox
       styles.display = "flex";
       styles.flexDirection = "column";
     }
+    if(padding)
+      styles.padding = padding;
   
   
     return <div id={id} className="box" style={styles}>
