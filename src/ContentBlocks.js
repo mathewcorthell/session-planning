@@ -6,17 +6,21 @@ import { ColumnRow,
 } from "./FormatBlocks";
 import ReactMarkdown from "react-markdown";
 
-export function Characters({flexWeight = "", height = "", characters}) {
+export function Characters({characterNotes}) {
+    const characters = Array.from(characterNotes);
+    while(characters.length < 6) {
+      characters.push({name: "", body: ""});
+    }
 
-    const three = [1,2,3];
-    return <>
-      {three.map(() => (
-        <ColumnRow flexWeight="1">
-          <ColumnRowBox flexWeight="1"/>
-          <ColumnRowBox flexWeight="1"/>
-        </ColumnRow>
+    // const characters = Array.from(Array(6).keys());
+    return <div style={{height: "inherit", width: "inherit", display: "grid"}}>
+      {characters.map((item, index) => (
+          <div class="box" style={{gridColumn: ((index % 2) + 1), padding: "0.1in" }}>
+            <h1 class="boxlabel">{item.name.replace(".md", "")}</h1>
+            <ReactMarkdown>{item.body}</ReactMarkdown>
+          </div>
       ))}
-    </>;
+    </div>;
   }
 
 export function StrongStartAndDate ({flexWeight = "", height = "", strongstart, date}) {
