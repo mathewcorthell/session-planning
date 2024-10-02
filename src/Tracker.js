@@ -25,7 +25,7 @@ function TrackerRow({numRounds = 10, lastRow=false, children}) {
   return <div style={{ flex: "1", display: "flex", flexDirection: "row" }}>
       <TrackerCell flexWeight="6" lastRow={lastRow} />
       {rounds.map((item, index, array) => (
-        <TrackerCell flexWeight="1" lastRow={lastRow} lastCol={index == (array.length-1) ? true : false}/>
+        <TrackerCell flexWeight="1" lastRow={lastRow} lastCol={index === (array.length-1) ? true : false}/>
       ))}
     </div>;
 }
@@ -33,12 +33,12 @@ function TrackerRow({numRounds = 10, lastRow=false, children}) {
 export function Tracker({flexWeight = "", height = ""}) {
 
   const creatures = Array.from(Array(20).keys());
-  const minis = [1, 2, 3, 4, 5, 6];
+  const minis = Array.from(Array(6).keys());
 
   return <ColumnRow flexWeight={flexWeight} height={height}>
     <ColumnRowBox width="60%" skipBox={true} nestColumn={true} padding="0.1in">
       {creatures.map((item, index, array) => (
-        <TrackerRow numRounds="10" lastRow={index == (array.length - 1) ? true : false}></TrackerRow>
+        <TrackerRow numRounds="10" lastRow={index === (array.length - 1) ? true : false}></TrackerRow>
       ))}
     </ColumnRowBox>
     <ColumnRowBox width="40%" skipBox={true} nestColumn={true}>

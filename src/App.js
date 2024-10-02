@@ -1,51 +1,85 @@
 import './App.css';
 import {useState} from "react";
-import {Page, 
-  InsetRow, 
-  InsetRowBackground, 
-  InsetRowInset} from "./FormatBlocks.js";
+import {Page} from "./FormatBlocks.js";
 import {Characters,
   StrongStartAndDate,
   PotentialScenes,
   SecretsAndClues,
   FantasticLocations,
   NpcsAndTreasure,
-  NotesAndTreasure,
   Notes,
   Monsters
 } from "./ContentBlocks.js";
 import { Tracker } from './Tracker.js';
 import { ParseSessionNotes } from './Parser.js';
 
+function FilePickerForm({setShowPages, sessionNotes, setSessionNotes, characterNotes, setCharacterNotes}) {
 
-
-function FilePickerForm({setShowNotes, setSessionNotes}) {
-  
-  const handleSubmit = (event) => {
-    var file = event.target.files[0];
-    var reader = new FileReader();
-    reader.onload = function(event) {
-      const fileContents = event.target.result;
-      console.log(fileContents);
-      setShowNotes(true);
-      setSessionNotes(fileContents);
-    }
-    reader.readAsText(file);
+  const handleFileSelected = (selectEvent) => {
+    var cNotes = [];
+    Array.prototype.forEach.call(selectEvent.target.files, (selectedFile) => {
+      const reader = new FileReader();
+      reader.onload = function(readEvent) {
+        const fileInfo = {
+          name: selectedFile.name,
+          body: readEvent.target.result
+        };
+        if(selectEvent.target.id == "notesfile") {
+          setSessionNotes(fileInfo);
+        }
+        else if(selectEvent.target.id == "characterfiles") {
+          cNotes.push(fileInfo);
+          setCharacterNotes(cNotes);
+        }
+      }
+      reader.readAsText(selectedFile);
+    });
   }
 
-  return <div id="filepicker">
-    <form>
-      <input type="file" onChange={handleSubmit}></input>
-      <input type="button" value="Choose" />
+  const handleSubmit = (event) => {
+    setShowPages(true);
+  }
+
+  const pickerBoxStyle = {
+    width: "20em",
+    padding: "2em",
+    margin: "auto",
+    marginTop: "20em",
+    display: "flex",
+    flexDirection: "row"
+  };
+
+  const buttonStyle = {
+    background: "gray",
+    color: "white",
+    padding: "0.5em",
+    margin: "1em",
+    borderRadius: "0.5em"
+  }
+
+  return <div className="box" id="filepicker" style={pickerBoxStyle}>
+      <form>
+      <div>
+        <label htmlFor="characterfiles" style={buttonStyle}>Character Files</label>
+        <input id="characterfiles" type="file" multiple style={{visibility:"hidden"}} onChange={handleFileSelected} />
+      </div>
+      <div>
+        <label htmlFor="notesfile" style={buttonStyle}>Notes File</label>
+        <input id="notesfile" type="file" style={{visibility:"hidden"}} onChange={handleFileSelected} />
+      </div>
+      <div>
+        <label htmlFor="showpage" style={buttonStyle}>Show Page</label>
+        <input id="showpage" type="button" style={{visibility:"hidden"}} onClick={handleSubmit} />
+      </div>
     </form>
   </div>;
 }
-function Pages({sessionNotes}) {
+function Pages({sessionNotes, characterNotes}) {
   const notesSections = ParseSessionNotes(sessionNotes);
 
   return <div id="pages">
       <Page id="one" side="right">
-        <Characters/>
+        <Characters characterNotes={characterNotes}/>
       </Page>
       <Page id="twos" side="left">
         <StrongStartAndDate height="13%" strongstart={notesSections['strongstart']} date={notesSections['date']} />
@@ -67,18 +101,22 @@ function Pages({sessionNotes}) {
 }
 
 function App() {
-  const [sessionNotes, setSessionNotes] = useState("");
-  const [showNotes, setShowNotes] = useState(false);
+  const [sessionNotes, setSessionNotes] = useState({file: "", body: ""});
+  const [characterNotes, setCharacterNotes] = useState([]);
+  const [showPages, setShowPages] = useState(false);
 
   return (    
     <div className="App">
-      {!showNotes ? (
-        <FilePickerForm 
-          setShowNotes = {(val) => setShowNotes(val)}
-          setSessionNotes = {(val) => setSessionNotes(val)}
-          />
+      {showPages ? (
+        <Pages sessionNotes={sessionNotes.body} characterNotes={characterNotes}/>
       ) : (
-        <Pages sessionNotes={sessionNotes}/>
+        <FilePickerForm 
+          setShowPages = {(val) => setShowPages(val)}
+          sessionNotes = {sessionNotes}
+          setSessionNotes = {(val) => setSessionNotes(val)}
+          characterNotes = {characterNotes}
+          setCharacterNotes = {(val) => setCharacterNotes(val)}
+          />
       )}
     </div>
   );

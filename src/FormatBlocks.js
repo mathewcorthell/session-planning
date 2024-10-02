@@ -32,9 +32,9 @@ export function InsetRow({flexWeight = "", height = "", children}) {
       padding: 0,
       position: "relative"
     }
-    if(flexWeight != "")
+    if(flexWeight !== "")
       styles.flex = flexWeight;
-    if(height != "")
+    if(height !== "")
       styles.height = height;
   
     return <div style={styles}>
@@ -76,9 +76,9 @@ export function ColumnRow({flexWeight = "", height = "", children}) {
       display: "flex",
       flexDirection: "row",
     }  
-    if(flexWeight != "")
+    if(flexWeight !== "")
       styles.flex = flexWeight;
-    if(height != "")
+    if(height !== "")
       styles.height = height;
 
     return <div style={styles}>
@@ -86,14 +86,17 @@ export function ColumnRow({flexWeight = "", height = "", children}) {
     </div>;
   }
   
-export function ColumnRowBox({id, flexWeight = "", width = "", padding = "", children, skipBox = false, nestColumn = false}) {
+export function ColumnRowBox({id, flexWeight = "", height = "", width = "", padding = "", children, skipBox = false, nestColumn = false}) {
     const styles = {
-      padding: 0
+      padding: 0,
+      width: "100%"
     };
     if(flexWeight !== "") 
       styles.flex = flexWeight;
     if(width !== "") 
       styles.width = width;
+    if(height !== "")
+      styles.height=height;
 
     if(skipBox) 
       styles.border = 0;
