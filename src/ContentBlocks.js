@@ -8,7 +8,8 @@ import { ParseCharacterNotes } from "./Parser";
 import ReactMarkdown from "react-markdown";
 
 export function Characters({characterNotes}) {
-    const characters = Array.from(characterNotes);
+    const characters = Array.from(characterNotes).sort((a, b) => {return a.name.localeCompare(b.name);});
+
     while(characters.length < 6) {
       characters.push({name: "", body: ""});
     }
