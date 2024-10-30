@@ -92,4 +92,12 @@ export function FantasticLocations({flexWeight = "", height = "", fantasticLocat
         </ColumnRowBox>
     </ColumnRow>;
   }
+
+  export function SceneNotes({flexWeight = "", height=""}) {
+    return <ColumnRow flexWeight={flexWeight} height={height} >
+      <ColumnRowBox flexWeight="1"></ColumnRowBox>
+      <ColumnRowBox flexWeight="1"></ColumnRowBox>
+      <ColumnRowBox flexWeight="1"></ColumnRowBox>
+    </ColumnRow>
+  }
   

@@ -8,7 +8,8 @@ import {Characters,
   FantasticLocations,
   NpcsAndTreasure,
   Notes,
-  Monsters
+  Monsters,
+  SceneNotes
 } from "./ContentBlocks.js";
 import { Tracker } from './Tracker.js';
 import { ParseSessionNotes } from './Parser.js';
@@ -24,10 +25,10 @@ function FilePickerForm({setShowPages, sessionNotes, setSessionNotes, characterN
           name: selectedFile.name,
           body: readEvent.target.result
         };
-        if(selectEvent.target.id == "notesfile") {
+        if(selectEvent.target.id === "notesfile") {
           setSessionNotes(fileInfo);
         }
-        else if(selectEvent.target.id == "characterfiles") {
+        else if(selectEvent.target.id === "characterfiles") {
           cNotes.push(fileInfo);
           setCharacterNotes(cNotes);
         }
@@ -36,52 +37,62 @@ function FilePickerForm({setShowPages, sessionNotes, setSessionNotes, characterN
     });
   }
 
-  const handleSubmit = (event) => {
-    setShowPages(true);
+  const handleShowSessionPages = (event) => {
+    setShowPages("session");
+  }
+
+  const handleShowScenePages = (event) => {
+    setShowPages("scenes");
   }
 
   const pickerBoxStyle = {
     width: "20em",
     padding: "2em",
     margin: "auto",
-    marginTop: "20em",
-    display: "flex",
-    flexDirection: "row"
+    marginTop: "20em"
   };
 
-  const buttonStyle = {
+  const buttonDivStyle = {
     background: "gray",
     color: "white",
     padding: "0.5em",
     margin: "1em",
-    borderRadius: "0.5em"
-  }
+    borderRadius: "0.5em",
+    textAlign: "center"
+  };
+
+  const buttonStyle = {
+  };
 
   return <div className="box" id="filepicker" style={pickerBoxStyle}>
       <form>
-      <div>
+      <div style={buttonDivStyle}>
         <label htmlFor="characterfiles" style={buttonStyle}>Character Files</label>
-        <input id="characterfiles" type="file" multiple style={{visibility:"hidden"}} onChange={handleFileSelected} />
+        <input id="characterfiles" type="file" multiple style={{display:"none"}} onChange={handleFileSelected} />
       </div>
-      <div>
+      <div style={buttonDivStyle}>
         <label htmlFor="notesfile" style={buttonStyle}>Notes File</label>
-        <input id="notesfile" type="file" style={{visibility:"hidden"}} onChange={handleFileSelected} />
+        <input id="notesfile" type="file" style={{display:"none"}} onChange={handleFileSelected} />
       </div>
-      <div>
-        <label htmlFor="showpage" style={buttonStyle}>Show Page</label>
-        <input id="showpage" type="button" style={{visibility:"hidden"}} onClick={handleSubmit} />
+      <div style={buttonDivStyle}>
+        <label htmlFor="showsessionpage" style={buttonStyle}>Show Session Pages</label>
+        <input id="showsessionpage" type="button" style={{visibility:"hidden"}} onClick={handleShowSessionPages} />
+      </div>
+      <div style={buttonDivStyle}>
+        <label htmlFor="showscenepage" style={buttonStyle}>Show Scene Pages</label>
+        <input id="showscenepage" type="button" style={{visibility:"hidden"}} onClick={handleShowScenePages} />
       </div>
     </form>
   </div>;
 }
-function Pages({sessionNotes, characterNotes}) {
+function SessionPages({sessionNotes, characterNotes}) {
   const notesSections = ParseSessionNotes(sessionNotes);
 
   return <div id="pages">
       <Page id="one" side="right">
         <Characters characterNotes={characterNotes}/>
       </Page>
-      <Page id="twos" side="left">
+      <Page id="two" side="left">
         <StrongStartAndDate height="13%" strongstart={notesSections['strongstart']} date={notesSections['date']} />
         <PotentialScenes height="25%" potentialscenes={notesSections['potentialscenes']}/>
         <SecretsAndClues height="40%" secretsandclues={notesSections['secretsandclues']}/>
@@ -100,24 +111,45 @@ function Pages({sessionNotes, characterNotes}) {
     </div>;
 }
 
+function ScenePages() {
+  return <div id="pages">
+      <Page id="one" side="right">
+        <SceneNotes flexWeight="1"/>
+        <SceneNotes flexWeight="1"/>
+        <SceneNotes flexWeight="1"/>
+        <SceneNotes flexWeight="1"/>
+      </Page>
+      <Page id="two" side="left">
+        <SceneNotes flexWeight="1"/>
+        <SceneNotes flexWeight="1"/>
+        <SceneNotes flexWeight="1"/>
+        <SceneNotes flexWeight="1"/>
+      </Page>
+    </div>;
+}
+
 function App() {
   const [sessionNotes, setSessionNotes] = useState({file: "", body: ""});
   const [characterNotes, setCharacterNotes] = useState([]);
-  const [showPages, setShowPages] = useState(false);
+  const [showPages, setShowPages] = useState("");
 
   return (    
     <div className="App">
-      {showPages ? (
-        <Pages sessionNotes={sessionNotes.body} characterNotes={characterNotes}/>
-      ) : (
+      {showPages === "session" ? (
+        <SessionPages sessionNotes={sessionNotes.body} characterNotes={characterNotes}/>
+      ) : ("")}
+      {showPages === "scenes" ? (
+        <ScenePages/>
+      ) : ("")}
+      {showPages === "" ? (
         <FilePickerForm 
-          setShowPages = {(val) => setShowPages(val)}
-          sessionNotes = {sessionNotes}
-          setSessionNotes = {(val) => setSessionNotes(val)}
-          characterNotes = {characterNotes}
-          setCharacterNotes = {(val) => setCharacterNotes(val)}
-          />
-      )}
+        setShowPages = {(val) => setShowPages(val)}
+        sessionNotes = {sessionNotes}
+        setSessionNotes = {(val) => setSessionNotes(val)}
+        characterNotes = {characterNotes}
+        setCharacterNotes = {(val) => setCharacterNotes(val)}
+        />
+    ) : ("")}
     </div>
   );
 }
