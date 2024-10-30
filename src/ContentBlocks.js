@@ -4,6 +4,7 @@ import { ColumnRow,
     InsetRowBackground, 
     InsetRowInset 
 } from "./FormatBlocks";
+import { ParseCharacterNotes } from "./Parser";
 import ReactMarkdown from "react-markdown";
 
 export function Characters({characterNotes}) {
@@ -17,7 +18,7 @@ export function Characters({characterNotes}) {
       {characters.map((item, index) => (
           <div class="box" style={{gridColumn: ((index % 2) + 1), padding: "0.1in" }}>
             <h1 class="boxlabel">{item.name.replace(".md", "")}</h1>
-            <ReactMarkdown>{item.body}</ReactMarkdown>
+            <ReactMarkdown>{ParseCharacterNotes(item.body)}</ReactMarkdown>
           </div>
       ))}
     </div>;
